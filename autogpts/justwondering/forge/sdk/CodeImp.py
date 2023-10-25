@@ -49,7 +49,7 @@ class CodeMonkeyRefactored(BaseAgent):
     def implement_code_changes(self, instruction, specs=None, convo=None):
         # if self.project is None:
         #     self.project = Project(os.path.join(
-        #         os.environ.get("PROJECT_DIR"), "test_project"))
+        #         os.environ.get("AGENT_WORKSPACE"), "test_project"))
         return self.monkey.implement_code_changes(convo, instruction, specs=specs)
 
     def postprocess_response(self, response):
@@ -69,9 +69,9 @@ class CodeMonkeyRefactored(BaseAgent):
         if project_name.split(".")[-1] != "":
             project_name = project_name.split(".")[0]
         self.project = Project({})
-        # if os.environ.get("PROJECT_DIR") != os.path.abspath(os.path.join(os.path.abspath(__file__), "../../../../workspace")):
+        # if os.environ.get("AGENT_WORKSPACE") != os.path.abspath(os.path.join(os.path.abspath(__file__), "../../../../workspace")):
         #     raise Exception(
-        #         "Please set PROJECT_DIR environment variable to the project directory")
+        #         "Please set AGENT_WORKSPACE environment variable to the project directory")
         project_path = create_directory(
             os.environ.get("AGENT_WORKSPACE"), project_name)
         project_path = create_directory(
