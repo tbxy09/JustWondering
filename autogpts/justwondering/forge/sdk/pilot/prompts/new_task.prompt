@@ -1,0 +1,7 @@
+
+summary the file content
+```
+{{file_content}}
+```
+and get the list of symbols defined in the file and how other classes might use them
+**IMPORTANT**: make sure that you extract all the info.

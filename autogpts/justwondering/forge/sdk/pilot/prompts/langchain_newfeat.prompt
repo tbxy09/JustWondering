@@ -1,0 +1,13 @@
+
+This is a summary of the selected text in English:
+
+- The text is about **LangChain**, an AI technology that allows users to build applications with large language models (LLMs).
+- The text introduces some features and updates of LangChain, such as:
+    - The **LangChain journey**, a series of exclusive content on Threads that showcases the potential of LLMs.
+    - The **Made With LangChain gallery**, a collection of inspiring applications built with LangChain by the community.
+    - The **support for GoogleAI Vertex AI's PaLM models**, which are powerful LLMs that can generate text and images. LangChainAI JS/TS 0.0.150 enables users to access these models from the web.
+    - The **Expression Language cookbooks**, which are guides and tutorials on how to compose chains using LangChain's new syntax. The cookbooks include interactive walkthroughs and diagrams to help users learn fast.
+    - The **LangChain Translator**, a tool that uses fine-tuned OpenAI models to translate LangChain modules from Python to JS. This helps keep LangChain JS up to date with Python.
+    - The **LangChain Teacher**, an open-source chat-based tutor app that teaches users the core components of LangChain and how to implement them.
+    - The **GitLab agent toolkit**, which allows users to create agents that can open their own pull requests in GitLab repos, such as the "Google Principle Engineer" agent.
+    - The **data anonymization chain**, which uses Microsoft Presidio and Faker to anonymize personal identifiable information (PII) data. This helps protect private data when using LLMs.

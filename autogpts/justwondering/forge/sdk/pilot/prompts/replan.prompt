@@ -1,0 +1,21 @@
+You previously generated steps to build a web app:
+
+{% for step, status in step_statuses.items() %}
+Step {{loop.index}}: {{step}} - {{status}} 
+{% endfor %}
+
+Based on the above outcomes, regenerate the optimal sequence of remaining steps to complete the project.
+
+{% if step_statuses['step_1'] == 'failed' %}
+Since step 1 failed, generate a step to handle this failure before continuing.
+{% endif %}
+
+{% if step_statuses['step_2'] == 'failed' %}
+Since step 2 failed, generate a step to handle this failure before proceeding.
+{% endif %}
+
+{% if step_statuses['step_3'] == 'success' %}
+Since step 3 succeeded, generate the next step assuming it was completed.
+{% endif %}
+
+Make sure the regenerated list of steps is adjusted based on the previous outcomes provided.

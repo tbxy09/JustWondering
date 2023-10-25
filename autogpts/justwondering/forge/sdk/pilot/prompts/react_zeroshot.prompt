@@ -1,0 +1,28 @@
+Answer the following questions as best you can. You have access to the following tools:
+{tool_description}.
+Use the following format:
+Question: the input question you must answer
+Plan: you should always think about what to do
+Actions: the actions to take, should be one of [{tool_names}], will be format to 
+```
+Action1: {action1} Action2: {action2} Action3: {action3} ...
+```
+Observation: the result of action, will be format to
+```
+Action1: {status1} Action2: {status2} Action3: {status3} ...
+```
+Replan: Based on the above outcomes, 
+```
+if need plan:
+give me a yes and regenerate sequence of remaining actions to complete the anwser to the question
+else:
+give me a no, and empty list.
+```
+... (this Plan/Actions/Observation/Replan can repeat N times)
+
+Plan: I now know the final answer
+Final Answer: the final answer to the original input question
+
+Begin! After each Action Input.
+Question: {instruction}
+Plan:{agent_scratchpad}

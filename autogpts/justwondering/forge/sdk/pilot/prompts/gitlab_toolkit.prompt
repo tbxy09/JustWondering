@@ -1,0 +1,12 @@
+
+The **GitLab agent toolkit** is a set of tools that enable an LLM agent to interact with a GitLab repository¹. It is a wrapper for the `python-gitlab` library and provides various functionalities for working with GitLab repositories¹. Some of the actions that can be performed using the GitLab agent toolkit include fetching issues from the repository, fetching details about a specific issue, posting a comment on a specific issue, creating a pull request from the bot's working branch to the base branch, creating a new file in the repository, reading a file from the repository, updating a file in the repository, and deleting a file from the repository¹. 
+
+To get started with the GitLab agent toolkit, you will need to install the `python-gitlab` library, create a GitLab personal access token, and set some environmental variables¹. The toolkit provides a simple API for performing these actions and can be used to interact with a GitLab repository in your agent¹.
+
+Please note that the GitLab agent toolkit is specifically designed for working with GitLab repositories and may not be compatible with other version control systems like GitHub¹.
+
+Let me know if there's anything else I can help you with! 
+(1) Gitlab | ️ Langchain. https://python.langchain.com/docs/integrations/toolkits/gitlab.
+(2) Agents and toolkits | ️ Langchain. https://python.langchain.com/docs/integrations/toolkits/.
+(3) GitHub | ️ Langchain. https://python.langchain.com/docs/modules/agents/toolkits/github.
+(4) langchain.agents.agent_toolkits.gitlab.toolkit .GitLabToolkit. https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_toolkits.gitlab.toolkit.GitLabToolkit.html.

@@ -1,0 +1,10 @@
+Create a file organizer CLI tool in Python
+Sort files in a directory based on their file types
+Move files into corresponding folders
+Create a Python file called `organize_files.py` as the entry point
+Parse the command line argument `--directory_path` to get the directory path to organize
+Implement logic to sort and move files based on their file types
+Use the `os` module to get the list of files in the directory
+Use the `shutil` module to move the files to the corresponding folders
+Follow the test specs provided
+Reach out for help if needed

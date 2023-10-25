@@ -1,0 +1,38 @@
+
+    when a user sends a request
+    {% if request %}
+    {{request}}
+    {% endif %}
+
+    first check the peewee table defined
+    ```
+    {{project_schema}}
+    ```
+    and
+    ```
+    {{project_files_schema}}
+    ```
+
+    then translate into a python command like this 
+    ```
+    python -c "code_to_run"
+    ```
+    with code_to_run like this
+
+    "Get me all files from project named 'xx', 
+    the agent will translate the request into a database query.
+   ``` project_name_to_search = "xx"  # Replace 'xx' with the desired project name.
+
+    # Get the project based on the name
+    project = ProjectM.get(ProjectM.name == project_name_to_search)
+
+    # Get all the files associated with the project
+    files_for_project = ProjectFiles.select().where(ProjectFiles.project == project)
+
+    # Iterate and return a string of the file names
+    print('
+'.join([f"{file.name
+ file.path" for file in files_for_project]))
+    ```
+    recommend the other requests that can be made to the database.
+    

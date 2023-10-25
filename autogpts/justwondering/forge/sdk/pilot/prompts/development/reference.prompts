@@ -1,0 +1,7 @@
+You will be provided with a reference project delimited by triple quotes. Your task is to use the reference project to write code for the new requirment: \"{{requirements}}.\"  \n\nEnsure that don't extract small snippets that are missing important context. 
+make sure that you give all the code including lines with no changes of code from the reference_project. and make sure all no comment for just a description of the function. no "pseudo-code"。
+Try to code in a sophisicated thought of both timing and error handling.
+Provide output in JSON format as follows:\n\n[{\"excerpt\": \"insert excerpt here\"},\n...\n{\"excerpt\": \"insert excerpt here\"}]"
+```
+{{reference_project}}
+```
