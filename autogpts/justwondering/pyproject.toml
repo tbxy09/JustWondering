@@ -25,6 +25,15 @@ duckduckgo-search = "^3.8.0"
 selenium = "^4.13.0"
 bs4 = "^0.0.1"
 agbenchmark = { path = "../../benchmark", optional = true }
+questionary = "^2.0.1"
+peewee = "^3.17.0"
+termcolor = "^2.3.0"
+rich = "^13.6.0"
+distro = "^1.8.0"
+yaspin = "^3.0.1"
+chardet = "^5.2.0"
+psycopg2 = "^2.9.9"
+pexpect = "^4.8.0"
 
 [tool.poetry.extras]
 benchmark = ["agbenchmark"]

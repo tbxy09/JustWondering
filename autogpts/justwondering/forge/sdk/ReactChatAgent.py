@@ -699,9 +699,10 @@ take the previous msg and extract actionable items list including sub points for
                             prompt_content=self._construct_raw_message(self.raw_message))
         with open(os.path.join(os.path.dirname(__file__), "prompts.txt"), "w") as f:
             f.write(self.raw_message[-1])
-
-        ret = self.run_monkey(
-            task_id=task_id, specs=instruction, instruction=f"here is codesnippet for you to refer to {code_snippet}\n"+self.raw_message[-1])
+        # run twice
+        for i in range(1):
+            ret = self.run_monkey(
+                task_id=task_id, specs=instruction, instruction=f"here is codesnippet for you to refer to {code_snippet}\n"+self.raw_message[-1])
         # content = json.dumps(ret['path']['content'])
         return ret
 
