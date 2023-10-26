@@ -2,6 +2,8 @@
 
 - [ ]  **Mode Used** : all prompt designed and tunned upon GPT-3.5
 - [ ]  **Reasonning Building**: decompose complex tasks into executable steps, and leverages the Rewoo/ReAct Reasoning or Debate Mode framework to enhance understanding and task breakdown.
+during reasonning building, I create a talks between developer and a coding worker, a debate mode to generate a multi turn progress to a more detail plan
+![image](https://github.com/tbxy09/JustWondering/assets/12082873/4da02a7d-d834-43b1-83c3-46c91818778b)
 
 ## Overall Flow
 
