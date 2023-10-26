@@ -1,78 +1,51 @@
-# 🌟 AutoGPT: the heart of the open-source agent ecosystem
+## Hightlights
 
-[![Discord Follow](https://dcbadge.vercel.app/api/server/autogpt?style=flat)](https://discord.gg/autogpt) [![GitHub Repo stars](https://img.shields.io/github/stars/Significant-Gravitas/AutoGPT?style=social)](https://github.com/Significant-Gravitas/AutoGPT/stargazers) [![Twitter Follow](https://img.shields.io/twitter/follow/auto_gpt?style=social)](https://twitter.com/Auto_GPT) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+- [ ]  **Mode Used** : all prompt designed and tunned upon GPT-3.5
+- [ ]  **Reasonning Building**: decompose complex tasks into executable steps, and leverages the Rewoo/ReAct Reasoning or Debate Mode framework to enhance understanding and task breakdown.
 
-**AutoGPT** is your go-to toolkit for supercharging agents. With its modular and extensible framework, you're empowered to focus on:
+## Overall Flow
 
-- 🏗️ **Building** - Lay the foundation for something amazing.
-- 🧪 **Testing** - Fine-tune your agent to perfection.
-- 👀 **Viewing** - See your progress come to life.
+- `ReactChatAgent.run()` is the main entry point, called by the client to execute an instruction
+- It calls `_compose_prompt()` to construct the prompt for the AI assistant
+- The prompt is sent to OpenAI API using `_send_msg()` to generate a response
+- `_parse_output()` processes the response to extract any tool actions
+- For each extracted action, the corresponding tool's `run()` is called based on `_format_function_map()`
+- The tool's `run()` calls internal methods like `implement_code_changes()` to execute that step
+- `implement_code_changes()` calls out to Codex for code generation
+- Generated artifacts are returned back up via the tool's `run()`
+- In `ReactChatAgent`, observations are used to construct context for next prompt
+- Loop continues until assistant indicates task is complete
 
-Be part of the revolution! **AutoGPT** stays at the forefront of AI innovation, featuring the codebase for the reigning champion in the Open-Source ecosystem.
+## Call Hierarchy
 
----
+- `ReactChatAgent.run()`
+    - `_compose_prompt()`
+        - `_send_msg()`
+            - Azure GPT16k API
+    - `_parse_output()`
+        - `_format_function_map()`
+            - `Tool.run()`
+                - `implement_code_changes()`
+                    - Codex
+- Return back up call stack
+    - `Tool.run()`
+        - Returns observations
+    - `ReactChatAgent`
+        - Constructs context
+        - Loops for next prompt
 
-<p align="center">
-  <a href="https://lablab.ai/event/autogpt-arena-hacks">
-    <img src="https://lablab.ai/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Flablab-static-eu%2Fimages%2Fevents%2Fcll6p5cxj0000356zslac05gg%2Fcll6p5cxj0000356zslac05gg_imageLink_562z1jzj.jpg&w=1080&q=75" alt="AutoGPT Arena Hacks Hackathon" />
-  </a>
-</p>
-<p align="center">
-  <strong>We're hosting a Hackathon!</strong>
-  <br>
-  Click the banner above for details and registration!
-</p>
+So in summary, `ReactChatAgent.run()` coordinates overall flow, prompts assistant, calls tools to execute steps, collects results for context, and loops until completion. Modular design allows extending with more tools.
 
----
+## Prompt Table
+|name | anchor | Description |
+| --- | --- | --- |
+| talks_dev_coder | justwondering/forge/prompts/talks_dev_coder.md | the prompts encourage a natural conversational flow with back-and-forth between the developer and coder.There are examples and guidance provided in the comments for how to format the responses. |
+| execute_commands | prompts/execute_commands.prompt | work as observation_promp,constructs the prompt to collect observations after executing, also for debugging and prompt tunning |
+| implement_task | FUNCTION_CALL | function call is designed to filter out the easy task to determine the task type and ability, such as reading or writing. No reasoning is needed for non-coding tasks, as they will directly go into a bash shell tool. However, coding tasks that require reasoning will lead to a reasoning process. |
 
-## 🥇 Current Best Agent: AutoGPT
 
-Among our currently benchmarked agents, AutoGPT scores the best. This will change after the hackathon - the top-performing generalist agent will earn the esteemed position as the primary AutoGPT 🎊
-
-📈 To enter, submit your benchmark run through the UI.
-
-## 🌟 Quickstart
-
-- **To build your own agent** and to be eligible for the hackathon, follow the quickstart guide [here](https://github.com/Significant-Gravitas/AutoGPT/blob/master/autogpts/forge/tutorials/001_getting_started.md). This will guide you through the process of creating your own agent and using the benchmark and user interface.
-
-- **To activate the best agent** follow the guide [here](https://github.com/Significant-Gravitas/AutoGPT/blob/master/autogpts/autogpt/README.md).
-
-Want to build your own groundbreaking agent using AutoGPT? 🛠️ There are three major components to focus on:
-
-### 🏗️ the Forge
-
-**Forge your future!** The `forge` is your innovation lab. All the boilerplate code is already handled, letting you channel all your creativity into building a revolutionary agent. It's more than a starting point, it's a launchpad for your ideas. All tutorials are located [here](https://medium.com/@aiedge/autogpt-forge-e3de53cc58ec).
-
-📘 [Learn More](https://github.com/Significant-Gravitas/AutoGPT/tree/master/autogpts/forge)
-
-### 🎯 the Benchmark
-
-**Test to impress!** The `benchmark` offers a stringent testing environment. Our framework allows for autonomous, objective performance evaluations, ensuring your agents are primed for real-world action.
-
-📘 [Learn More](https://github.com/Significant-Gravitas/AutoGPT/blob/master/benchmark)
-
-### 🎮 the UI
-
-**Take Control!** The `frontend` is your personal command center. It gives you a user-friendly interface to control and monitor your agents, making it easier to bring your ideas to life.
-
-📘 [Learn More](https://github.com/Significant-Gravitas/AutoGPT/tree/master/frontend)
-
----
-
-### 🔄 Agent Protocol
-
-🔌 **Standardize to Maximize!** To maintain a uniform standard and ensure seamless compatibility, AutoGPT employs the [agent protocol](https://agentprotocol.ai/) from the AI Engineer Foundation. This standardizes the communication pathways from your agent to the frontend and benchmark.
-
-### 🤔 Questions? Problems? Suggestions?
-
-#### Get help - [Discord 💬](https://discord.gg/autogpt)
-
-[![Join us on Discord](https://invidget.switchblade.xyz/autogpt)](https://discord.gg/autogpt)
-
-To report a bug or request a feature, create a [GitHub Issue](https://github.com/Significant-Gravitas/AutoGPT/issues/new/choose). Please ensure someone else hasn’t created an issue for the same topic.
-
-<p align="center">
-  <a href="https://star-history.com/#Significant-Gravitas/AutoGPT&Date">
-    <img src="https://api.star-history.com/svg?repos=Significant-Gravitas/AutoGPT&type=Date" alt="Star History Chart">
-  </a>
-</p>
+## Prompt borrowed from [gptpilot](https://github.com/Pythagora-io/gpt-pilot)
+| Call | Prompt | Schema | Functions |
+|-|-|-|-| 
+| [`convo.send_message('development/task/request_files_for_code_changes.prompt', step_data)`](./pilot/const/function_calls.py#L132) | [`request_files_for_code_changes.prompt`](./pilot/prompts/development/task/request_files_for_code_changes.prompt) | `step_data` | |
+| [`convo.send_message('development/implement_changes.prompt', impl_data, IMPLEMENT_CHANGES)`](./pilot/const/function_calls.py#L137) | [`implement_changes.prompt`](./pilot/prompts/develetopment/implement_changes.prompt) | `impl_data` | [`IMPLEMENT_CHANGES`](./pilot/const/function_calls.py#L603) |  
