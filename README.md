@@ -4,8 +4,13 @@
 - [ ]  **Reasonning Building**: decompose complex tasks into executable steps, and leverages the Rewoo/ReAct Reasoning or Debate Mode framework to enhance understanding and task breakdown.
 - [ ] **My strategy is to enhance the reasonning process, not the observation/action process**
 during reasonning building, I create talks between developer and a coding worker, a debate mode to generate a multi turn progress to a more detail plan
-![image](https://github.com/tbxy09/JustWondering/assets/12082873/4da02a7d-d834-43b1-83c3-46c91818778b)
+![image](https://github.com/tbxy09/JustWondering/assets/12082873/4da02a7d-d834-43b1-83c3-46c91818778b)]
 
+##Setup Azure API (added after Oct.26 for tester)
+export AZURE_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxx
+export AZURE_OPENAI_DEPLOYMENT_NAME=   (I am using a gpt-3.5 16k model of Azure)
+export AZURE_OPENAI_ENDPOINT=https://{endpoint_name}.openai.azure.com/
+export AZURE_API_VERSION=2023-07-01-preview
 
 ## Overall Flow
 
