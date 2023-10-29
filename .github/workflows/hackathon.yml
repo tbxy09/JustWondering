@@ -128,9 +128,8 @@ jobs:
           branch=$(jq -r '.["branch_to_benchmark"]' arena/$AGENT_NAME.json)
           git clone "$link" -b "$branch" "$AGENT_NAME"
           cd $AGENT_NAME
+          cp ./autogpts/$AGENT_NAME/.env.example ./autogpts/$AGENT_NAME/.env
           ./run agent start $AGENT_NAME
-          cat ./autogpts/justwondering/.env.example
-          cat ./autogpts/justwondering/.env
           cd ../benchmark
           poetry install
           poetry run agbenchmark --test=WriteFile
