@@ -23,7 +23,7 @@ jobs:
           PGUSER: admin
           POSTGRES_PASSWORD: admin
           # POSTGRES_USERNAME: admin
-          # POSTGRES_DATABASE: devdb
+          POSTGRES_DATABASE: devdb
           # POSTGRES_USER: admin
         # Set health checks to wait until postgres has started
         options: >-
@@ -129,6 +129,7 @@ jobs:
           git clone "$link" -b "$branch" "$AGENT_NAME"
           cd $AGENT_NAME
           ./run agent start $AGENT_NAME
+          cat .env
           cd ../benchmark
           poetry install
           poetry run agbenchmark --test=WriteFile
