@@ -22,9 +22,9 @@ jobs:
         env:
           PGUSER: admin
           POSTGRES_PASSWORD: admin
-          POSTGRES_USERNAME: admin
-          POSTGRES_DATABASE: devdb
-          POSTGRES_USER: admin
+          # POSTGRES_USERNAME: admin
+          # POSTGRES_DATABASE: devdb
+          # POSTGRES_USER: admin
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
