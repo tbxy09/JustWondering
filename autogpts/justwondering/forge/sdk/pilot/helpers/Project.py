@@ -15,6 +15,7 @@ from forge.sdk.pilot.helpers.agents.TechLead import TechLead
 from forge.sdk.pilot.helpers.agents.Developer import Developer
 from forge.sdk.pilot.helpers.agents.Architect import Architect
 from forge.sdk.pilot.helpers.agents.ProductOwner import ProductOwner
+import forge.init_dot as init_dot
 from forge.sdk.pilot.utils.files import get_parent_folder
 # TODO move to a separate file
 # https://github.com/Significant-Gravitas/Auto-GPT
@@ -22,7 +23,8 @@ from forge.sdk.pilot.utils.files import get_parent_folder
 # https://microsoft.github.io/promptflow/index.html
 # https://github.com/microsoft/promptflow
 
-
+print(
+    f"DB_NAME, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, {os.getenv('DB_NAME')}, {os.getenv('DB_HOST')}, {os.getenv('DB_PORT')}, {os.getenv('DB_USER')}, {os.getenv('DB_PASSWORD')}")
 # Establish connection to the database
 database = PostgresqlDatabase(
     "devdb",
