@@ -129,7 +129,6 @@ jobs:
           git clone "$link" -b "$branch" "$AGENT_NAME"
           cd $AGENT_NAME
           ./run agent start $AGENT_NAME
-          cat .env
           cat ./autogpts/justwondering/.env.example
           cat ./autogpts/justwondering/.env
           cd ../benchmark
