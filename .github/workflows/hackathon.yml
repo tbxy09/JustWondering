@@ -12,7 +12,7 @@ on:
 jobs:
   matrix-setup:
     runs-on: ubuntu-latest
-    # Service containers to run with `runner-job`
+    # Service containers to run with `matrix-setup`
     services:
       # Label used to access the service container
       postgres:
@@ -61,6 +61,27 @@ jobs:
       min-python-version: '3.10'
     name: '${{ matrix.agent-name }}'
     runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          PGUSER: admin
+          POSTGRES_PASSWORD: admin
+          # POSTGRES_USERNAME: admin
+          # POSTGRES_DATABASE: devdb
+          # POSTGRES_USER: admin
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
     timeout-minutes: 50
     strategy:
       fail-fast: false
