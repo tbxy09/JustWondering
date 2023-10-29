@@ -20,11 +20,7 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          PGUSER: admin
-          POSTGRES_PASSWORD: admin
-          # POSTGRES_USERNAME: admin
-          POSTGRES_DATABASE: devdb
-          # POSTGRES_USER: admin
+          POSTGRES_PASSWORD: postgres
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -68,11 +64,7 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          PGUSER: admin
-          POSTGRES_PASSWORD: admin
-          # POSTGRES_USERNAME: admin
-          # POSTGRES_DATABASE: devdb
-          # POSTGRES_USER: admin
+          POSTGRES_PASSWORD: postgres
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
