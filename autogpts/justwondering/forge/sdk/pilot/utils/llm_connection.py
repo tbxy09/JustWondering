@@ -121,13 +121,17 @@ def create_gpt_chat_completion(messages: List[dict], req_type, min_tokens=MIN_TO
         raise ValueError(
             f'Too many tokens in messages: {tokens_in_messages}. Please try a different test.')
     # Azure API config
-    openai.api_type = "azure"
-    openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-    openai.api_version = "2023-07-01-preview"
-    openai.api_key = os.getenv("AZURE_API_KEY")
-    azure_deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+    if os.getenv("USE_AZURE") is not None:
+        openai.api_type = "azure"
+        openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
+        openai.api_version = "2023-07-01-preview"
+        openai.api_key = os.getenv("AZURE_API_KEY")
+        azure_deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+    else:
+        chat_model = os.getenv("CHAT_MODEL")
+        openai.api_key = os.getenv("OPENAI_API_KEY")
     gpt_data = {
-        'model': 'gpt-4',
+        'model': os.getenv("CHAT_MODEL"),
         'n': 1,
         'max_tokens': min(4096, MAX_GPT_MODEL_TOKENS - tokens_in_messages),
         'temperature': 1,
@@ -159,31 +163,59 @@ def create_gpt_chat_completion(messages: List[dict], req_type, min_tokens=MIN_TO
     # print(gpt_data['messages'])
     while True:
         try:
-            if function_calls is None:
-                response = openai.ChatCompletion.create(
-                    engine=azure_deployment_name,
-                    messages=gpt_data['messages'],
-                    temperature=0.5,
-                    # max_tokens=10000,
-                    # top_p=0.95,
-                    # frequency_penalty=0,
-                    # presence_penalty=0,
-                    stop=os.getenv("END_RESPONSE")
-                )
+            if os.getenv("USE_AZURE") is not None:
+                if function_calls is None:
+                    response = openai.ChatCompletion.create(
+                        engine=azure_deployment_name,
+                        messages=gpt_data['messages'],
+                        temperature=0.5,
+                        # max_tokens=10000,
+                        # top_p=0.95,
+                        # frequency_penalty=0,
+                        # presence_penalty=0,
+                        stop=os.getenv("END_RESPONSE")
+                    )
+                else:
+                    response = openai.ChatCompletion.create(
+                        engine=azure_deployment_name,
+                        messages=gpt_data['messages'],
+                        functions=gpt_data['functions'],
+                        function_call=gpt_data['function_call'],
+                        temperature=0.5,
+                        # max_tokens=10000,
+                        # top_p=0.95,
+                        # frequency_penalty=0,
+                        # presence_penalty=0,
+                        # stop=stop
+                        # stop=None
+                    )
             else:
-                response = openai.ChatCompletion.create(
-                    engine=azure_deployment_name,
-                    messages=gpt_data['messages'],
-                    functions=gpt_data['functions'],
-                    function_call=gpt_data['function_call'],
-                    temperature=0.5,
-                    # max_tokens=10000,
-                    # top_p=0.95,
-                    # frequency_penalty=0,
-                    # presence_penalty=0,
-                    # stop=stop
-                    # stop=None
-                )
+                if function_calls is None:
+                    response = openai.ChatCompletion.create(
+                        model=gpt_data['model'],
+                        messages=gpt_data['messages'],
+                        temperature=0.5,
+                        # max_tokens=10000,
+                        # top_p=0.95,
+                        # frequency_penalty=0,
+                        # presence_penalty=0,
+                        stop=os.getenv("END_RESPONSE")
+                    )
+                else:
+                    response = openai.ChatCompletion.create(
+                        model=gpt_data['model'],
+                        messages=gpt_data['messages'],
+                        functions=gpt_data['functions'],
+                        function_call=gpt_data['function_call'],
+                        temperature=0.5,
+                        # max_tokens=10000,
+                        # top_p=0.95,
+                        # frequency_penalty=0,
+                        # presence_penalty=0,
+                        # stop=stop
+                        # stop=None
+                    )
+
             # logger.info(f'Response message: {response["choices"][0]["message"]["content"]}')
             while response["choices"][0]["finish_reason"] == 'function_call' or \
                     (response["choices"][0]["finish_reason"] == 'stop' and "function_call" in response["choices"][0]["message"]):

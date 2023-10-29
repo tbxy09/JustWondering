@@ -1,8 +1,11 @@
-CHAT_MODEL="gpt-4"
-
 # Control log level
 LOG_LEVEL=INFO
 PORT=8000
+
+USE_AZURE=true
+AZURE_OPENAI_ENDPOINT=
+AZURE_API_KEY=
+AZURE_OPENAI_DEPLOYMENT_NAME=
 
 LOG_LEVEL=DEBUG
 DATABASE_STRING="sqlite:///agent.db"
@@ -10,8 +13,8 @@ PORT=8000
 AGENT_WORKSPACE="agbenchmark_config/workspace"
 http_proxy=
 https_proxy=
-DB_NAME=postgres
+DB_NAME=devdb
 DB_HOST=localhost
 DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=postgres
+DB_USER=admin
+DB_PASSWORD=admin

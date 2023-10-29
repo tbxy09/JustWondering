@@ -31,7 +31,7 @@ IMIT_TALKS = """
 
 
 class ChatCompletionArgs(BaseModel):
-    engine: str
+    model: str
     messages: list[dict]
     response_model: Optional[Type[BaseModel]] = None
     function_call: Optional[Dict] = None
@@ -124,11 +124,15 @@ class User(BaseModel):
 # convo = AgentConvo(agent,system_message)
 FINAL_ANSWER_ACTION = "Final Answer:"
 output = BaseOutput()
-openai.api_type = "azure"
-openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-openai.api_version = "2023-07-01-preview"
-openai.api_key = os.getenv("AZURE_API_KEY")
-deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+if os.environ.get("USE_AZURE") is not None:
+    openai.api_type = "azure"
+    openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
+    openai.api_version = "2023-07-01-preview"
+    openai.api_key = os.getenv("AZURE_API_KEY")
+    deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+else:
+    chat_model = os.environ.get("CHAT_MODEL")  # gpt-3.5-turbo, gpt-4
+    openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class ReactChatAgent(BaseAgent):
@@ -167,9 +171,8 @@ class ReactChatAgent(BaseAgent):
             task_id, "artifacts_out")
         self.logger.debug(f"====================== artifacts_in: {artifacts_in}")
         self.logger.debug(f"====================== artifacts_out: {artifacts_out}")
-
         args = {
-            'engine': deployment_name,
+            # 'engine': deployment_name,
             'temperature': 0.5,
             'messages': [
                 # {"role": "system", "content": "Any Instruction you get which labeled as **IMPORTANT**, you follow strictly."},
@@ -178,6 +181,10 @@ class ReactChatAgent(BaseAgent):
                     "content": f"here is task:{input},is just task of reading cotent from a file or writing something to a file? if yes, just use bash commands to read or wirte, save output txt to the {artifacts_out}, and the file to read is in the {artifacts_in} folder if has any. if it is a coding task, just respond with msg 'it is a coding task'"},
             ]
         }
+        if os.getenv("USE_AZURE") is not None:
+            args['engine'] = deployment_name
+        else:
+            args['model'] = chat_model
         FUNCTION_CALL = {
             "name": "implement_task",
             "description": "to do the task, first check if the task is just read or write files if yes, use bash command to read or write files,otherwise, just respond with msg 'it is a coding task'",
@@ -204,7 +211,6 @@ class ReactChatAgent(BaseAgent):
                     "input": self.plugins[0].args_schema.schema()
             }
         }
-
         ChatCompletionArgs(**args)
         args['function_call'] = {
             'name': FUNCTION_CALL['name'],
@@ -628,13 +634,19 @@ Task Specs: {{instruction}}
         system_msg = self.get_prompt(system_msg, {})
         prompt = self._compose_prompt(instruction)
         args = {
-            'engine': deployment_name,
+            # 'engine': deployment_name,
             'temperature': 0.5,
             'messages': [
                 # {"role": "system", "content": "Any Instruction you get which labeled as **IMPORTANT**, you follow strictly."},
                 {"role": "system", "content": f"{system_msg}"},
                 {"role": "user", "content": f"{prompt}"}]
         }
+
+        if os.getenv("USE_AZURE") is not None:
+            args['engine'] = deployment_name
+        else:
+            args['model'] = chat_model
+
         self.raw_message.append(system_msg)
         self.raw_message.append(prompt)
         # save_prompt_to_file(prompt_path=prompt_path, prompt_content=prompt)
@@ -649,7 +661,7 @@ Task Specs: {{instruction}}
 take the previous msg and extract actionable items list including sub points for each item and make each item with its subpoints into one line with no linebreak(only line break between items) and remove the heading "Action Item" ,and also, if the code provide in previous msg, extract them as one of the items. make sure that you put the entire content as an item even though you will likely copy and paste the most of the previous messsage """, {})
         prompt = self._construct_raw_message(self.raw_message[1:])
         args = {
-            'engine': deployment_name,
+            # 'engine': deployment_name,
             'temperature': 0.5,
             'messages': [
                 {"role": "system", "content": f"{system_msg}"},
@@ -657,6 +669,10 @@ take the previous msg and extract actionable items list including sub points for
                 # {"role": "user", "content": f"""and you can also refer to the details from specs:{instruction}"""}
             ]
         }
+        if os.getenv("USE_AZURE") is not None:
+            args['engine'] = deployment_name
+        else:
+            args['model'] = chat_model
         # exact_code(prompt), ```python\nprint("hello world")\n```
         code_snippet = extract_python_code(prompt)
         # dummp the multi line to single line
@@ -718,11 +734,11 @@ take the previous msg and extract actionable items list including sub points for
             prompt_path = os.path.join(
                 workfolder, "prompts/execute_commands.prompt")
             save_prompt_to_file(prompt_path=prompt_path, prompt_content=prompt)
-            openai.api_type = "azure"
-            openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-            openai.api_version = "2023-07-01-preview"
-            openai.api_key = os.getenv("AZURE_API_KEY")
-            deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+            # openai.api_type = "azure"
+            # openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
+            # openai.api_version = "2023-07-01-preview"
+            # openai.api_key = os.getenv("AZURE_API_KEY")
+            # deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
             response = None
             tool_description = self._compose_plugin_description()
             function_list = self.format_function_call()
